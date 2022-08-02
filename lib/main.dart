@@ -13,11 +13,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "My Calculator",
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black12,
+        fontFamily: "Rubik",
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blueGrey[400],
           foregroundColor: Colors.black,
         ),
       ),
+      builder: (context, widget) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: widget!,
+        );
+      },
       home: const Calculator(),
     );
   }
@@ -44,7 +51,51 @@ class CalculatorState extends State<Calculator> {
         // ],
       ),
       drawer: Drawer(
-        child: _historyList(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(
+              height: 140,
+              child: DrawerHeader(
+                padding: EdgeInsets.zero,
+                margin: EdgeInsets.zero,
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey[400],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Text(
+                      "History",
+                      style: TextStyle(
+                        fontSize: 40,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                        onPressed: () {
+                          _clearHistory();
+                        },
+                        child: Text(
+                          "Clear History",
+                          style:
+                              TextStyle(fontSize: 20, color: Colors.blue[900]),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: _historyList(),
+            ),
+          ],
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -57,7 +108,7 @@ class CalculatorState extends State<Calculator> {
                 _tempText,
                 style: const TextStyle(
                   color: Colors.grey,
-                  fontSize: 15,
+                  fontSize: 22,
                 ),
               ),
             ),
@@ -69,7 +120,7 @@ class CalculatorState extends State<Calculator> {
               child: Text(
                 _text,
                 style: const TextStyle(
-                  fontSize: 27,
+                  fontSize: 30,
                 ),
               ),
             ),
@@ -81,7 +132,6 @@ class CalculatorState extends State<Calculator> {
               2: FlexColumnWidth(size),
               3: FlexColumnWidth(size),
             },
-            border: TableBorder.all(),
             children: [
               TableRow(
                 children: [
@@ -308,7 +358,7 @@ class CalculatorState extends State<Calculator> {
 
   TextStyle _buttonTextStyle() {
     return const TextStyle(
-      fontSize: 18,
+      fontSize: 25,
       color: Colors.black,
     );
   }
@@ -319,10 +369,14 @@ class CalculatorState extends State<Calculator> {
       height: size,
       color: Colors.white,
       child: Center(
-        child: TextButton(
-          style: TextButton.styleFrom(
-              minimumSize: const Size.fromHeight(size),
-              padding: EdgeInsets.zero,
+        child: OutlinedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0))),
+              minimumSize:
+                  MaterialStateProperty.all(const Size.fromHeight(size)),
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap),
           onPressed: () {
             callback();
@@ -339,45 +393,21 @@ class CalculatorState extends State<Calculator> {
   Widget _historyList() {
     return ListView.separated(
       padding: const EdgeInsets.all(5.0),
-      itemCount: _history.length + 1,
+      itemCount: _history.length,
       itemBuilder: (context, index) {
-        if (index == 0) return _historyHeader();
         return ListTile(
-          title: Text(_history[_history.length - index]),
-        );
-      },
-      separatorBuilder: (context, index) {
-        if (index == 0) return const SizedBox.shrink();
-        return const Divider();
-      },
-    );
-  }
-
-  Widget _historyHeader() {
-    return DrawerHeader(
-      child: Wrap(
-        children: [
-          const Text(
-            "History",
-            style: TextStyle(
-              fontSize: 30,
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-              onPressed: () {
-                _clearHistory();
-              },
-              child: const Text(
-                "Clear History",
+          title: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Text(
+              _history[_history.length - 1 - index],
+              style: const TextStyle(
+                fontSize: 20,
               ),
             ),
-          )
-        ],
-      ),
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const Divider(),
     );
   }
 }

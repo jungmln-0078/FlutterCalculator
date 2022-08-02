@@ -27,7 +27,7 @@ class CalculatorState extends State<Calculator> {
   String _text = "0";
   String _tempText = "";
   List<String> _list = [];
-  final List<String> _history = [];
+  List<String> _history = [];
 
   @override
   Widget build(BuildContext context) {
@@ -300,6 +300,12 @@ class CalculatorState extends State<Calculator> {
     return t ? d : d.floor();
   }
 
+  void _clearHistory() {
+    setState(() {
+      _history = [];
+    });
+  }
+
   TextStyle _buttonTextStyle() {
     return const TextStyle(
       fontSize: 18,
@@ -337,7 +343,7 @@ class CalculatorState extends State<Calculator> {
       itemBuilder: (context, index) {
         if (index == 0) return _historyHeader();
         return ListTile(
-          title: Text(_history[index - 1]),
+          title: Text(_history[_history.length - index]),
         );
       },
       separatorBuilder: (context, index) {
@@ -348,9 +354,30 @@ class CalculatorState extends State<Calculator> {
   }
 
   Widget _historyHeader() {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: const Text("History", style: TextStyle(fontSize: 25)),
+    return DrawerHeader(
+      child: Wrap(
+        children: [
+          const Text(
+            "History",
+            style: TextStyle(
+              fontSize: 30,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+              onPressed: () {
+                _clearHistory();
+              },
+              child: const Text(
+                "Clear History",
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

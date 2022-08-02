@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(const MyApp());
 
 const double size = 80;
+const String divideByZero = "Divide by zero";
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class CalculatorState extends State<Calculator> {
   String _text = "0";
   String _tempText = "";
   List<String> _list = [];
-  List<String> _history = [];
+  final List<String> _history = [];
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +172,10 @@ class CalculatorState extends State<Calculator> {
 
   void _inputNumber(String n) {
     setState(() {
+      if (_text == divideByZero) {
+        _clearAll();
+        return;
+      }
       if (_text == "0") {
         _text = n;
       } else {
@@ -181,6 +186,10 @@ class CalculatorState extends State<Calculator> {
 
   void _inputOperand(String n) {
     setState(() {
+      if (_text == divideByZero) {
+        _clearAll();
+        return;
+      }
       if (_list.isEmpty) {
         _list.add(_text);
         _list.add(n);
@@ -194,6 +203,10 @@ class CalculatorState extends State<Calculator> {
 
   void _togglePlusMinus() {
     setState(() {
+      if (_text == divideByZero) {
+        _clearAll();
+        return;
+      }
       if (_text == "0") return;
       if (_text.contains("-")) {
         _text = _text.replaceFirst("-", "");
@@ -205,6 +218,10 @@ class CalculatorState extends State<Calculator> {
 
   void _point() {
     setState(() {
+      if (_text == divideByZero) {
+        _clearAll();
+        return;
+      }
       if (_text.contains(".")) return;
       _text += ".";
     });
@@ -226,6 +243,10 @@ class CalculatorState extends State<Calculator> {
 
   void _backSpace() {
     setState(() {
+      if (_text == divideByZero) {
+        _clearAll();
+        return;
+      }
       if (_text.length > 1) {
         _text = _text.substring(0, _text.length - 1);
       } else {
@@ -236,13 +257,23 @@ class CalculatorState extends State<Calculator> {
 
   void _result() {
     setState(() {
+      if (_text == divideByZero) {
+        _clearAll();
+        return;
+      }
       if (_list.length < 2) {
         _text = _text;
       } else {
         _list.add(_text);
         _text = _calculate(
             double.parse(_list[0]), _list[1], double.parse(_list[2]));
-        _history.add("${_list.join(" ")} = $_text");
+        _history.add("${_list.map((d) {
+          try {
+            return _parseDoubleToInt(double.parse(d));
+          } catch (e) {
+            return d;
+          }
+        }).join(" ")} = $_text");
         _list = [];
         _tempText = "";
       }
@@ -258,7 +289,7 @@ class CalculatorState extends State<Calculator> {
       case "×":
         return _parseDoubleToInt(a * b).toString();
       case "÷":
-        if (b == 0) return "Divide by zero";
+        if (b == 0) return divideByZero;
         return _parseDoubleToInt(a / b).toString();
     }
     return "";

@@ -397,7 +397,7 @@ class CalculatorState extends State<Calculator> {
       itemBuilder: (context, index) {
         return ListTile(
           title: FittedBox(
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.scaleDown,
             child: Text(
               _history[_history.length - 1 - index],
               style: const TextStyle(

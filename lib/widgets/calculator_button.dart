@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class CalculatorButton extends StatelessWidget {
-  CalculatorButton({required this.text, required this.onClick, Key? key})
-      : super(key: key);
+  CalculatorButton({required this.text, required this.onClick, Key? key}) : super(key: key);
   final String text;
   final Function onClick;
 
@@ -18,8 +17,7 @@ class CalculatorButton extends StatelessWidget {
         child: OutlinedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0))),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
             minimumSize: MaterialStateProperty.all(Size.fromHeight(size)),
             padding: MaterialStateProperty.all(EdgeInsets.zero),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,

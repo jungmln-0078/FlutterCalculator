@@ -91,8 +91,7 @@ class CalculatorApp extends StatelessWidget {
                   ),
                   TableRow(
                     children: [
-                      CalculatorButton(
-                          text: "+/-", onClick: model.togglePlusMinus),
+                      CalculatorButton(text: "+/-", onClick: model.togglePlusMinus),
                       CalculatorButton(text: "0", onClick: model.inputNumber),
                       CalculatorButton(text: ".", onClick: model.point),
                       CalculatorButton(text: "=", onClick: model.result),

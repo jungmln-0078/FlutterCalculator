@@ -32,8 +32,7 @@ class CalculatorHistory extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: TextButton(
-                      style: TextButton.styleFrom(
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                      style: TextButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
                       onPressed: () {
                         model.clearHistory();
                       },

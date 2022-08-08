@@ -109,8 +109,7 @@ class CalculatorModel extends Model {
       _text = _text;
     } else {
       _list.add(_text);
-      _text =
-          calculate(double.parse(_list[0]), _list[1], double.parse(_list[2]));
+      _text = calculate(double.parse(_list[0]), _list[1], double.parse(_list[2]));
       _history.add("${_list.map((d) {
         try {
           return parseDoubleToInt(double.parse(d));

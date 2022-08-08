@@ -92,7 +92,7 @@ class CalculatorModel extends Model {
       clearAll();
       return;
     }
-    if (_text.length > 1) {
+    if (_text.length > 1 && _text.length == 2 && !_text.contains("-")) {
       _text = _text.substring(0, _text.length - 1);
     } else {
       _text = "0";

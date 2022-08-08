@@ -25,7 +25,9 @@ class App extends StatelessWidget {
           child: widget!,
         );
       },
-      home: CalculatorApp(),
+      home: SafeArea(
+        child: CalculatorApp(),
+      ),
     );
   }
 }
